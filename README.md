@@ -1,19 +1,20 @@
+
 Find files, empty filer or delete/destroy files
 
 
 
 The way to use the script is:
 
+The way to use the script is:
 
-  Usage:   ./file-seeker.sh <path> <extension> 
-  Example: ./file-seeker.sh /path/to/dir txt   (searches .txt files) 
-           ./file-seeker.sh /path/to/dir '*'   (searches all files)
-
+> Usage:   ./file-seeker.sh <path> <extension> <br>
+>  Example: ./file-seeker.sh /path/to/dir txt   (searches .txt files) <br>
+> &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;    ./file-seeker.sh /path/to/dir '*'   (searches all files)
 
 
 The script presents a menu with the options that can be used, the options are independent of each other.
 
-================================================================
+=================================================================<br>
   What do you want to do?
 
           1) Search and see
@@ -21,6 +22,7 @@ The script presents a menu with the options that can be used, the options are in
           3) Search and delete
           4) Search empty directories and Delete
           5) Do nothing
-================================================================
+          
+=================================================================
           
 Enter your choice (1, 2, 3, 4 or 5): 
