@@ -1,36 +1,5 @@
 #!/bin/bash
 
-# Check if a path is provided as an argument
-if [ $# -ne 2 ]; then
-    echo "Usage: $0 <path> <extension>"
-    echo "Example: $0 /path/to/dir txt   (searches .txt files)"
-    echo "         $0 /path/to/dir '*'   (searches all files)"
-    exit 1
-fi
-
-# Initialize variables
-password="lar32ldasnkh4k23heasdnkwnr23lqnedni3dn"
-path="$1"
-extension="$2"
-file_count=0
-dir_count=0
-overwrite=15
-
-# define colors
-GREEN="\033[32m"
-RED="\033[31m"
-BLUE="\033[34m"     
-PURPLE="\033[35m"   
-YELLOW="\033[33m"    
-ORANGE="\033[38;5;208m"   
-RESET="\033[0m"
-
-# Check if the provided path exists and is a directory
-if [ ! -d "$path" ]; then
-    echo "Error: The path '$path' does not exist or is not a directory."
-    exit 1
-fi
-
 # Function to recursively count and display files and directories (including hidden ones)
 find_files() 
 {
@@ -76,6 +45,7 @@ find_files()
                         echo -e "Overwriting original file with random data ${overwrite} times: ${GREEN}$item${RESET}"
                         shred -n${overwrite} -f -z "$item"  # Overwrite the file 5 times with random data and zeros
 
+                        # We overwrite the file name 5 times with a hash
                         for i in {1..5}; do
                             # Generate an MD5 hash based on the current name and timestamp
                             hash=$(echo "$item-$(date +%s)" | md5sum | cut -d' ' -f1)
@@ -102,7 +72,8 @@ find_files()
     done
 }
 
-process_empty_dirs() {
+process_empty_dirs() 
+{
     local path="$1"   # Path to search in
     local count=0     # Counter for affected directories
 
@@ -134,17 +105,61 @@ process_empty_dirs() {
     echo -e "${GREEN}Total directories affected: $count${RESET}"
 }
 
+# define colors
+GREEN="\033[32m"
+RED="\033[31m"
+BLUE="\033[34m"     
+PURPLE="\033[35m"   
+YELLOW="\033[33m"    
+ORANGE="\033[38;5;208m"   
+RESET="\033[0m"
 
-# Pregunta qué acción realizar con los ficheros encontrados
-echo -e "${GREEN}What do you want to do?${RESET}"
-echo -e "${GREEN}1) Search and see${RESET}"
-echo -e "${GREEN}2) Search and Empty${RESET}"
-echo -e "${GREEN}3) Search and delete${RESET}"
-echo -e "${GREEN}4) Search empty directories and Delete${RESET}"
-echo -e "${GREEN}5) Do nothing${RESET}"
+# Check if a path is provided as an argument
+if [ $# -ne 2 ]; then
+    echo
+    echo -e "${YELLOW}  Usage:   $0 <path> <extension> "
+    echo -e "${YELLOW}  Example: $0 /path/to/dir txt   (searches .txt files) "
+    echo -e "${YELLOW}           $0 /path/to/dir '*'   (searches all files)${RESET}"
+    echo
+    exit 1
+fi
+
+# Initialize variables
+password="lar32ldasnkh4k23heasdnkwnr23lqnedni3dn"
+path="$1"
+extension="$2"
+file_count=0
+dir_count=0
+overwrite=15
+
+
+# Check if the provided path exists and is a directory
+if [ ! -d "$path" ]; then
+    echo "Error: The path '$path' does not exist or is not a directory."
+    exit 1
+fi
+
+offset=10
+padding=$(printf "%${offset}s")
+
+# Mostrar texto con desplazamiento
+echo
+echo "================================================================="
+echo -e "  ${GREEN}What do you want to do?${RESET}"
+echo
+echo -e "${padding}${GREEN}1) Search and see${RESET}"
+echo -e "${padding}${GREEN}2) Search and Empty${RESET}"
+echo -e "${padding}${GREEN}3) Search and delete${RESET}"
+echo -e "${padding}${GREEN}4) Search empty directories and Delete${RESET}"
+echo -e "${padding}${GREEN}5) Do nothing${RESET}"
+echo "================================================================="
+# Leer opción con desplazamiento
+echo -n "${padding}"  # Añadir padding a la línea de entrada
+echo
 read -p "Enter your choice (1, 2, 3, 4 or 5): " action_choice
 
 # Display start message
+echo 
 echo -e "Scanning path: ${GREEN}$path${RESET}"
 echo "-------------------------"
 
@@ -153,7 +168,7 @@ case "$action_choice" in
         action="list"
         find_files "$path"  
         echo
-        echo "*** Search End ***"
+        echo "*** Search files end"
         ;;
     2)
         action="empty"
@@ -162,7 +177,7 @@ case "$action_choice" in
         if [[ "$confirm" == "yes" ]]; then
             find_files "$path"
             echo
-            echo "*** Search & Empty End ***"
+            echo "*** Search & Empty End"
         else
             echo "Operation canceled by the user."
         fi
@@ -175,7 +190,7 @@ case "$action_choice" in
         if [[ "$confirm" == "yes" ]]; then
             find_files "$path"
             echo
-            echo "*** Search & Destroy End ***"
+            echo "*** Search & Destroy End"
         else
             echo "Operation canceled by the user."
         fi
@@ -194,7 +209,8 @@ case "$action_choice" in
 
         ;;
     5)
-        echo "Do nothing";
+        echo
+        echo -e " * ${RED}Do nothing selected${RESET}";
         ;;
     *)
         echo -e "${RED}Invalid choice. No action taken.${RESET}"
