@@ -28,3 +28,12 @@ The script presents a menu with the options that can be used, the options are in
 =================================================================
           
 Enter your choice (1, 2, 3, 4 or 5): 
+
+
+
+
+
+****************************************************************
+https://www.netveloper.com
+
+Do you want to learn about linux? https://cambiatealinux.com
