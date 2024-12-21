@@ -1,6 +1,7 @@
 Find files, empty filer or delete/destroy files
 
 
+
 The way to use the script is:
 
   Usage:   ./file-seeker.sh <path> <extension> 
